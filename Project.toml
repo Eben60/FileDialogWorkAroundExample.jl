@@ -1,0 +1,12 @@
+name = "NatFlDlgWorkAroundTest"
+uuid = "6c12e33d-f2c5-4ad3-9acf-241fffb8dffd"
+authors = ["Ben Elkin <8xe8n-cm@online.de>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+NativeFileDialog = "e1fe445b-aa65-4df4-81c1-2041507f0fd4"
+
+[compat]
+Dates = "1.11.0"
+NativeFileDialog = "0.2.1"
