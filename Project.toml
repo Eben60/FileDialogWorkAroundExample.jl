@@ -1,6 +1,6 @@
 name = "NatFlDlgWorkAroundTest"
 uuid = "6c12e33d-f2c5-4ad3-9acf-241fffb8dffd"
-authors = ["Ben Elkin <8xe8n-cm@online.de>"]
+authors = ["Eben60"]
 version = "0.1.0"
 
 [deps]

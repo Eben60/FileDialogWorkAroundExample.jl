@@ -18,11 +18,19 @@ function pick_file(path=""; filterlist="")
 end
 export pick_file
 
-function check_if_log_noise(s)
-    # s ="2024-12-14 22:52:05.228"
+function check_if_log_noise(s, starttime)
+    s == "" && return nothing
     format = DateFormat("yyyy-mm-dd HH:MM:SS.sss")
-    tryparse(DateTime, s, format)
-    
+
+    lognoise = length(s) >= 23 && (ss = s[1:23]; true) &&
+        !isnothing(tryparse(DateTime, ss, format)) &&
+        starttime <= DateTime(ss, format) <= now() && 
+        occursin("osascript", s) &&
+        occursin("IMKClient", s)
+
+    lognoise || @warn "OS information, possibly irrelevant: $s"
+
+    return nothing
 end
 export check_if_log_noise
 
@@ -38,6 +46,7 @@ POSIX path of (choose file with prompt "Pick a file:" default location strPath)"
     cmd = `osascript -e $script`
     flpath = ""
     warn_noise = ""
+    starttime = now()
     try
         flpath = readchomp(pipeline(cmd; stderr=stderr_buffer));
         warn_noise = take!(stderr_buffer) |> String;
@@ -45,7 +54,8 @@ POSIX path of (choose file with prompt "Pick a file:" default location strPath)"
         flpath = ""
         warn_noise = ""
     end
-    return (;flpath, warn_noise)
+    check_if_log_noise(warn_noise, starttime)
+    return flpath
 end
 
 
