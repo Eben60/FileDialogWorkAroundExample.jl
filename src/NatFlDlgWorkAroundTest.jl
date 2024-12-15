@@ -1,7 +1,7 @@
 module NatFlDlgWorkAroundTest
 
-include("NatFlDlgWorkAround.jl")
-using .NatFlDlgWorkAround
+include("FileDialogWorkAround.jl")
+using .FileDialogWorkAround
 # export macos_version
 # export check_if_log_noise
 # export parse_multifiles, alias2posix

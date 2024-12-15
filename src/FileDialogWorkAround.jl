@@ -1,4 +1,4 @@
-module NatFlDlgWorkAround
+module FileDialogWorkAround
 
 using NativeFileDialog, Dates
 
@@ -20,7 +20,7 @@ export pick_file
 
 
 function pick_multi_file(path=""; filterlist="") 
-    BUGGY_MACOS || return NativeFileDialog.pick_file(path; filterlist)
+    BUGGY_MACOS || return NativeFileDialog.pick_multi_file(path; filterlist)
     return pick_workaround(path, :multifile; filterlist)
 end
 export pick_multi_file
