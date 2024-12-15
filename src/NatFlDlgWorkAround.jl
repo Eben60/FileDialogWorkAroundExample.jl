@@ -32,17 +32,30 @@ function check_if_log_noise(s, starttime)
 
     return nothing
 end
-export check_if_log_noise
 
 function pick_file_workaround(path; filterlist)
+    startswith(filterlist, ".") && (filterlist = filterlist[2:end])
+    filterlist = filterlist |> lowercase
+
     stderr_buffer = IOBuffer()
-    if isempty(path) 
-        script = """POSIX path of (choose file with prompt "Pick a file:")"""
+
+    if isempty(filterlist)
+        filterdef = filtercall = ""
     else
-        script = 
-""" set strPath to POSIX file "$path"
-POSIX path of (choose file with prompt "Pick a file:" default location strPath)"""
+        startswith(filterlist, ".") && (filterlist = filterlist[2:end])
+        filterlist = filterlist |> lowercase
+        filterdef = """set filetype to "$filterlist"\n"""
+        filtercall = "of type filetype"
     end
+
+    if isempty(path)
+        pathdef = pathcall = ""
+    else
+        pathdef = """set strPath to "$path"\n"""
+        pathcall = "default location strPath"
+    end
+
+    script = """$(filterdef)$(pathdef)POSIX path of (choose file with prompt "Pick a file:" $filtercall $pathcall)"""
     cmd = `osascript -e $script`
     flpath = ""
     warn_noise = ""
