@@ -14,9 +14,15 @@ const BUGGY_MACOS = macos_version() >= v"15"
 
 function pick_file(path=""; filterlist="") 
     BUGGY_MACOS || return NativeFileDialog.pick_file(path; filterlist)
-    return pick_file_workaround(path; filterlist)
+    return pick_workaround(path, :pickfile; filterlist)
 end
 export pick_file
+
+function pick_folder(path="") 
+    BUGGY_MACOS || return NativeFileDialog.pick_folder(path)
+    return pick_workaround(path, :pickfolder)
+end
+export pick_folder
 
 function check_if_log_noise(s, starttime)
     s == "" && return nothing
@@ -33,7 +39,16 @@ function check_if_log_noise(s, starttime)
     return nothing
 end
 
-function pick_file_workaround(path; filterlist)
+function pick_workaround(path, picktype; filterlist="")
+    if picktype == :pickfile
+        script_trunk = """POSIX path of (choose file with prompt "Pick a file:" """
+    elseif picktype == :pickfolder
+        script_trunk = """POSIX path of (choose folder with prompt "Pick a folder:" """
+    else
+        error("Key $picktype not supported")
+    end
+
+
     startswith(filterlist, ".") && (filterlist = filterlist[2:end])
     filterlist = filterlist |> lowercase
 
@@ -55,7 +70,7 @@ function pick_file_workaround(path; filterlist)
         pathcall = "default location strPath"
     end
 
-    script = """$(filterdef)$(pathdef)POSIX path of (choose file with prompt "Pick a file:" $filtercall $pathcall)"""
+    script = """$(filterdef)$(pathdef)$(script_trunk) $filtercall $pathcall)"""
     cmd = `osascript -e $script`
     flpath = ""
     warn_noise = ""
