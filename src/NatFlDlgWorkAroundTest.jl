@@ -6,7 +6,7 @@ using .FileDialogWorkAround
 # export check_if_log_noise
 # export parse_multifiles, alias2posix
 
-export pick_file, pick_folder, pick_multi_file
+export pick_file, pick_folder, pick_multi_file, save_file
 
 
 end # module NatFlDlgWorkAroundTest
