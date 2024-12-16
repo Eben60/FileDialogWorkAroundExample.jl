@@ -10,6 +10,7 @@ function macos_version()
 end
 
 const BUGGY_MACOS = macos_version() >= v"15"
+export BUGGY_MACOS
 
 function pick_file(path=""; filterlist="") 
     BUGGY_MACOS || return NativeFileDialog.pick_file(path; filterlist)
