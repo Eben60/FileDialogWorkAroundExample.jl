@@ -52,6 +52,7 @@ function check_if_log_noise(s, starttime)
 end
 
 function pick_workaround(path, picktype; filterlist="")
+    path = string(path)
     if picktype == :pickfile
         script_trunk = """POSIX path of (choose file with prompt "Pick a file:" """
     elseif picktype == :savefile
@@ -105,7 +106,6 @@ function pick_workaround(path, picktype; filterlist="")
 end
 
 function parse_multifiles(p)
-    # p = "alias MacSysdiskBen:Users:elk:Downloads:2023:tmp:Abrechnung_,31.pdf, alias MacSysdiskBen:Users:elk:Downloads:2023:tmp:Abrechnung_2,574767229.pdf, alias MacSysdiskBen:Users:elk:Downloads:2023:tmp:Abrechnung_214712029800,73.pdf"
     p1 = replace(p, ", alias " => "\nalias ")
     als = split(p1, "\n")
     for (i, al) in pairs(als)
